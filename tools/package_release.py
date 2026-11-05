@@ -32,10 +32,13 @@ for folder in ("backend", "tests", "tools", "examples"):
 for name in ("package.json", "package-lock.json", "index.html", "tsconfig.json", "vite.config.ts"):
     allowed.append(ROOT / "frontend" / name)
 allowed.extend((ROOT / "frontend" / "src").rglob("*"))
+chapter = ROOT / "deliverables" / "Онтологии в анализе социальных данных с помощью ИИ.docx"
+if chapter.is_file():
+    allowed.append(chapter)
 archive(sorted(allowed), OUTPUT / "OntologyWorkbench-source.zip", ROOT)
 manifest = {}
 for path in sorted(OUTPUT.iterdir()):
-    if path.suffix in {".zip", ".docx"}:
+    if path.suffix in {".zip", ".docx"} and not path.name.startswith("~$"):
         manifest[path.name] = {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 (OUTPUT / "checksums.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
 print(json.dumps(manifest, indent=2, ensure_ascii=True))
