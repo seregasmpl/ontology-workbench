@@ -1,0 +1,11 @@
+export type Concept = { id: string; name: string; kind: 'category' | 'entity'; definition: string; include: string; exclude: string; context: string };
+export type RelationType = { id: string; name: string; source_type: string; target_type: string; definition: string; include: string; exclude: string };
+export type Ontology = { name: string; task: string; unit: string; context_policy: string; concepts: Concept[]; relations: RelationType[] };
+export type Span = { field: 'text' | 'context'; start: number; end: number; quote: string };
+export type Annotation = { status: 'labeled' | 'no_match' | 'needs_context' | 'uncertain'; labels: { concept_id: string; evidence: Span[] }[]; entities: { id: string; type_id: string; span: Span }[]; relations: { type_id: string; source: string; target: string; evidence: Span[] }[]; rationale: string };
+export type Item = { id: string; source_id: string; group_id: string; text: string; context: string; split: string; provenance: string; restricted: boolean; gold: Annotation | null; reviewed: number | null };
+export type Version = { id: string; project_id: string; revision: number; frozen: boolean; body: Ontology; examples: any[]; parameters: any; note: string };
+export type Profile = { id: string; name: string; provider: string; base_url: string; model: string; has_key: boolean; secret_mode: string; max_tokens: number; structured: boolean };
+export const emptyAnnotation = (): Annotation => ({ status: 'labeled', labels: [], entities: [], relations: [], rationale: '' });
+export const statusNames: Record<string, string> = { labeled: 'Размечено', no_match: 'Ни одна категория', needs_context: 'Не хватает контекста', uncertain: 'Не могу определить', error: 'Ошибка', pending: 'В очереди', running: 'В работе', done: 'Готово', paused: 'Приостановлено', stopping: 'Останавливается', completed: 'Завершено', completed_with_errors: 'Завершено с ошибками' };
+export const splitNames: Record<string, string> = { dev: 'Настройка', test: 'Итоговая проверка', pool: 'Корпус без разметки' };
